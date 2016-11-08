@@ -16,6 +16,7 @@ namespace EjemploExcel
         // Atributos   -------------
 
         string rutaPlantilla;
+        string rutaCSV;
 
 
         // Constructor   -------------------
@@ -31,7 +32,7 @@ namespace EjemploExcel
 
         /// <summary>
         /// Escribe datos de prueba en un archivo de excel existente.
-        /// Pone los datos en TODO
+        /// Pone los datos en la pestaña "Resultados Técnicos".
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -137,9 +138,59 @@ namespace EjemploExcel
                 rutaPlantilla = openFileDialog1.FileName;
 
                 // Actualiza la interfaz
-                buttonEscribir.Enabled = true;
                 textBoxRutaArchivo.Text = rutaPlantilla;
+                buttonEscribir.Enabled = true;
+                //textBoxPlantilla2.Text = rutaPlantilla;
             }
+        }
+
+        /// <summary>
+        /// Abre una ventana de dialogo para seleccionar el archivo csv. 
+        /// Si se selecciona un archivo, realiza los cambios correspondientes en 
+        /// la lógica del programa y en la interfaz gráfica.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>                  
+        private void SeleccionarCSV(object sender, EventArgs e)
+        {
+            // Abre el dialogo de selección de archivo
+            if (openFileDialogCSV.ShowDialog() == DialogResult.OK)
+            {
+                rutaCSV = openFileDialogCSV.FileName;
+
+                // Actualiza la interfaz
+                buttonEscribirCSV.Enabled = true;
+                textBoxCSV.Text = rutaCSV;
+            }
+        }
+
+        /// <summary>
+        /// Lee los datos desde un archivo .csv y los escribe en un archivo de excel ya existente.
+        /// Pone los datos en la pestaña "Resultados técnicos"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EscribirDesdeCSV(Object sender, EventArgs e)
+        {
+            try
+            {
+                var AplicacionExcel = new Microsoft.Office.Interop.Excel.Application();   // Aplicacion de excel
+                //AplicacionExcel.Workbooks.OpenText(rutaCSV, StartRow: 1, DataType: XlTextParsingType.xlDelimited, ConsecutiveDelimiter: false, Tab:false, Semicolon: true, Comma: false);
+                AplicacionExcel.Workbooks.OpenText(rutaCSV, Origin: 65001, DataType: XlTextParsingType.xlDelimited, Comma: false, Semicolon: true);
+
+                AplicacionExcel.Visible = true; // Hace visible la ventana de excel.
+
+            }
+            catch (Exception excepcion)
+            {
+                Console.WriteLine(excepcion.Message);
+            }
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
