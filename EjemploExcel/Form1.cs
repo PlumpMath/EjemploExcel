@@ -15,6 +15,7 @@ namespace EjemploExcel
     {
         // Atributos   -------------
 
+        string rutaPlantilla;
 
 
         // Constructor   -------------------
@@ -25,6 +26,38 @@ namespace EjemploExcel
         }
 
         // Métodos    -------------------
+
+
+
+        /// <summary>
+        /// Escribe datos de prueba en un archivo de excel existente.
+        /// Pone los datos en TODO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EscribirEnPantilla(Object sender, EventArgs e)
+        {
+            try
+            {
+                var AplicacionExcel = new Microsoft.Office.Interop.Excel.Application();   // Aplicacion de excel
+                Microsoft.Office.Interop.Excel._Workbook libro = AplicacionExcel.Workbooks.Open(rutaPlantilla);
+
+                Microsoft.Office.Interop.Excel._Worksheet hoja  = libro.Sheets["Resultados Técnicos"];
+                hoja.Cells[11, 2] = "Prueba";
+                hoja.Cells[11, 3] = "Prueba";
+                hoja.Cells[11, 4] = "Prueba";
+                hoja.Cells[11, 5] = "Prueba";
+                hoja.Cells[11, 6] = "Prueba";
+
+                AplicacionExcel.Visible = true; // Hace visible la ventana de excel.
+
+            }
+            catch (Exception excepcion)
+            {
+                Console.WriteLine(excepcion.Message);
+            }
+
+        }
 
         /// <summary>
         /// Crea un nuevo archivo de excel con datos de prueba.
@@ -86,6 +119,26 @@ namespace EjemploExcel
             catch (Exception excepcion)
             {
                 Console.WriteLine(excepcion.Message);
+            }
+        }
+
+        /// <summary>
+        /// Abre una ventana de dialogo para seleccionar el archivo nessus. 
+        /// Si se selecciona un archivo, realiza los cambios correspondientes en 
+        /// la lógica del programa y en la interfaz gráfica.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>                  
+        private void SeleccionarPlantilla(object sender, EventArgs e)
+        {
+            // Abre el dialogo de selección de archivo
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                rutaPlantilla = openFileDialog1.FileName;
+
+                // Actualiza la interfaz
+                buttonEscribir.Enabled = true;
+                textBoxRutaArchivo.Text = rutaPlantilla;
             }
         }
     }
